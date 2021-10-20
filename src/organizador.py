@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from numpy import string_
 import algoritmos
 
@@ -30,3 +31,11 @@ class Organizador:
             ret += str(i) + "\n"
         return ret
         
+=======
+import algoritmos
+
+class Organizador:
+    def __init__(file):
+        self._d = read_file(file)
+        self._permutador = generar_permutador()
+>>>>>>> a223d536824034472f22a0b392708a8a87e48409
