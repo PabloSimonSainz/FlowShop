@@ -85,6 +85,18 @@ def tiempo_final_f(f):
     return mx
    
 # ---------------------------------------------------------------------------------------------------------------
+def rand_search(d, iter):
+    actual_sol = generar_permutador(d)
+    actual_time = tiempo_final_f(funcion_f(actual_sol, d))
+
+    for i in range(iter):
+        new_sol = generar_permutador(d)
+        actual_time = tiempo_final_f(funcion_f(new_sol, d))
+
+        if new_sol > actual_sol:
+            actual_sol = new_sol
+            
+    return actual_sol
 
 def get_vecino(v):
     for i in range(len(v)):
@@ -93,23 +105,23 @@ def get_vecino(v):
             aux[i], aux[j] = aux[j], aux[i]
             yield aux
 
-def search(d, type, actual_sol = None):
+def local_search(d, primero = bool, actual_sol = None):
     if actual_sol == None:
         actual_sol = generar_permutador(d)
     actual_time = tiempo_final_f(funcion_f(actual_sol, d))
-    
-    if type == 1: return random.choice(list(get_vecino(actual_sol)))
 
-    for i in get_vecino(actual_sol):
-        new_sol = i
-        actual_time = tiempo_final_f(funcion_f(new_sol, d))
+    while True:
+        aux = actual_sol
+        for i in get_vecino(actual_sol):
+            new_sol = i
+            actual_time = tiempo_final_f(funcion_f(new_sol, d))
 
-        if type == 3:
             if new_sol > actual_sol:
                 actual_sol = new_sol
-        if type == 2: # local primero
-            if new_sol > actual_sol:
-                return new_sol    
+            if primero: # local primero
+                break
+
+        if aux == actual_sol: break
 
     return actual_sol
 
