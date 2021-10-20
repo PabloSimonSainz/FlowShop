@@ -75,51 +75,43 @@ def funcion_f(vector = generar_permutador(), datos = read_file()):
 
     return retorno
 
-# ---------------------------------------------------------------------------------------------------------------
+def tiempo_final_f(f):
+    mx = 0
+    for i in f:
+        aux = max(i)
+        if aux > mx:
+            mx = aux
 
-def busqueda_aleatoria():
-    
-    sol_inicial = generar_permutador()
-    sol_actual = sol_inicial
-    sol_mejor = sol_actual
-    print("Partimos de la siguiente solución: ")
-    print(sol_inicial)
-    # Pedimos por teclado el número de intentos
-    x = int(input("Introduce el número de iteraciones: "))
-    optimo_mejor = funcion_f(sol_mejor)
-    
-    for i in range(x):
-        sol_actual = generar_permutador()
-        optimo = funcion_f(sol_actual)    
-        if(optimo > optimo_mejor):
-            sol_mejor = sol_actual
-            optimo_mejor = optimo
-        
-    print("La mejor solución es: ")
-    print(sol_mejor)
-    print("Con valor: ")
-    print(optimo_mejor)
+    return mx
    
 # ---------------------------------------------------------------------------------------------------------------
 
-def busqueda_local():
+def get_vecino(v):
+    for i in range(len(v)):
+        for j in range(i):
+            aux = list(v)
+            aux[i], aux[j] = aux[j], aux[i]
+            yield aux
+
+def search(d, type, actual_sol = None):
+    if actual_sol == None:
+        actual_sol = generar_permutador(d)
+    actual_time = tiempo_final_f(funcion_f(actual_sol, d))
     
-    sol_inicial = generar_permutador()
-    sol_actual = sol_inicial
-    sol_mejor = sol_actual
-    vecino = []
-   
-    for i in range(len(sol_actual)):
-        for j in range(len(sol_actual)):
-            mov = sol_actual[:]
-            # print(mov)
-            # print(sol_actual)           
-            aux = mov[i]
-            mov[i] = mov[j]
-            mov[j] = mov[i]
-            mov[j] = aux
-            vecino.append(mov)
-    return vecino
+    if type == 1: return random.choice(list(get_vecino(actual_sol)))
+
+    for i in get_vecino(actual_sol):
+        new_sol = i
+        actual_time = tiempo_final_f(funcion_f(new_sol, d))
+
+        if type == 3:
+            if new_sol > actual_sol:
+                actual_sol = new_sol
+        if type == 2: # local primero
+            if new_sol > actual_sol:
+                return new_sol    
+
+    return actual_sol
 
 # ---------------------------------------------------------------------------------------------------------------
 
