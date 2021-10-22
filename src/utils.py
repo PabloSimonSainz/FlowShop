@@ -125,35 +125,28 @@ def local_search(d, primero = bool, actual_sol = None):
 
     return actual_sol
 
-# ---------------------------------------------------------------------------------------------------------------
 
-def generar_aleatorio(solucion):
-    for i in range(0,2):
-        indice_aleatorio = random.randint(0, len(solucion) - 1)
-        a = random.randint(0, len(solucion) - 1)
-        temporal = solucion[a]
-        solucion[a] = solucion[indice_aleatorio]
-        solucion[indice_aleatorio] = temporal
-    return solucion
 
 # ---------------------------------------------------------------------------------------------------------------
 
-def recocido_simulado(sec_enfriamiento,iteraciones,temp_final):
+def recocido_simulado(sec_enfriamiento, d, temp_final, iteraciones = 50):
     
-    sol_actual = generar_permutador()
-    temp_inicial = 0.35 * funcion_f(sol_actual)
+    sol_actual = generar_permutador(d)
+    temp_inicial = 0.35 * funcion_f(sol_actual, d)
     temp = temp_inicial
+
     while temp >= temp_final:
-        for i in range(1,iteraciones):
-            sol_candidata = generar_aleatorio(sol_actual)
-            coste = funcion_f(sol_candidata)-funcion_f(sol_actual)
+        for i in range(iteraciones):
+            sol_candidata = choice(get_vecino(sol_actual))
+            coste = funcion_f(sol_candidata, d) - funcion_f(sol_actual, d)
+            
             if coste < 0:
                 sol_actual = sol_candidata
             else:
                 rand = random.random()
-                if rand <= np.index_exp(-coste/temp):
+                if rand <= np.index_exp(-coste / temp):
                     sol_actual = sol_candidata
-    temp = sec_enfriamiento*temp
+    temp = sec_enfriamiento * temp
 
     return sol_actual
 
