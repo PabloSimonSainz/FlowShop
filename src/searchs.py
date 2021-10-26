@@ -49,23 +49,24 @@ def local_search(d, primero = bool, actual_sol = None):
 
 # ---------------------------------------------------------------------------------------------------------------
 
-def recocido_simulado(sec_enfriamiento, d, temp_final, iteraciones = 50):
+def recocido_simulado(d, iteraciones = 50, sec_enfriamiento = 0.8, temp_final = 0.1):
     
     sol_actual = generar_permutador(d)
-    temp_inicial = 0.35 * funcion_f(sol_actual, d)
+    temp_inicial = 0.35 * tiempo_final_f(funcion_f(sol_actual, d))
     temp = temp_inicial
 
     while temp >= temp_final:
         for i in range(iteraciones):
-            sol_candidata = random.choice(get_vecino(sol_actual))
-            coste = funcion_f(sol_candidata, d) - funcion_f(sol_actual, d)
+            sol_candidata = random.choice(list(get_vecino(sol_actual)))
+
+            coste = tiempo_final_f(funcion_f(sol_candidata, d)) - tiempo_final_f(funcion_f(sol_actual, d))
             
             if coste < 0:
                 sol_actual = sol_candidata
             else:
                 rand = random.random()
-                if rand <= np.index_exp(-coste / temp):
+                if rand <= np.exp(-coste / temp):
                     sol_actual = sol_candidata
-    temp = sec_enfriamiento * temp
-
+        
+        temp = sec_enfriamiento * temp
     return sol_actual
