@@ -12,7 +12,7 @@ def mutacion(individuos, MUPB: float,times: int=1):
         
     return individuos
 
-def cruce(individuos, cruce: int, CXPB: float):
+def cruce(individuos, ox: bool, CXPB: float):
     retorno = []
     index = []
     
@@ -22,11 +22,14 @@ def cruce(individuos, cruce: int, CXPB: float):
         if r < CXPB:
             index.append(i)
         if len(index) == 2:
-            if cruce == 1:
+            if ox:
                 retorno.extend(ox([individuos[index[0]], individuos[index[1]]]))
-                index = []
+            else:
+                retorno.extend(cx([individuos[index[0]], individuos[index[1]]]))
+            index = []
     
     return individuos
+
 
 def ox(pareja):
     puntos = [random.randint(0, len(pareja[0]) - 1), random.randint(0, len(pareja[0]) - 1)]
@@ -44,3 +47,31 @@ def ox(pareja):
                         aux = i + 1
                         break
     return retorno
+
+def cx(pareja):
+    r = random.randint(0, len(pareja[0])-1)
+    ciclo = [pareja[0][r], pareja[1][r]]
+    retorno = [list(pareja[0]), list(pareja[1])]
+    
+    if ciclo[0] != ciclo[1]:
+        for i in pareja[0]:
+            index = pareja[0].index(ciclo[-1])
+            if pareja[1][index] == ciclo[0]:
+                break
+            ciclo.append(pareja[1][index])
+    else:
+        ciclo.pop()
+    
+    for k in range(2):
+
+        aux = 0
+        for i in range(len(pareja[0])):
+            if pareja[k][i] not in ciclo:
+                for i in range(aux, len(pareja[0])):
+                    if pareja[not k][i] not in ciclo:
+                        retorno[k][i] = pareja[not k][i]
+                        aux = i + 1
+                        break
+
+    return retorno
+
