@@ -12,7 +12,7 @@ def mutacion(individuos, MUPB: float,times: int=1):
         
     return individuos
 
-def cruce(individuos, ox: bool, CXPB: float):
+def cruce(individuos, OX: bool, CXPB: float):
     retorno = []
     index = []
     
@@ -22,10 +22,12 @@ def cruce(individuos, ox: bool, CXPB: float):
         if r < CXPB:
             index.append(i)
         if len(index) == 2:
-            if ox:
-                retorno.extend(ox([individuos[index[0]], individuos[index[1]]]))
+            if OX:
+                #retorno.extend(ox([individuos[index[0]], individuos[index[1]]]))
+                individuos[index[0]], individuos[index[1]] = ox([individuos[index[0]], individuos[index[1]]])
             else:
-                retorno.extend(cx([individuos[index[0]], individuos[index[1]]]))
+                #retorno.extend(cx([individuos[index[0]], individuos[index[1]]]))
+                individuos[index[0]], individuos[index[1]] = cx([individuos[index[0]], individuos[index[1]]])
             index = []
     
     return individuos
