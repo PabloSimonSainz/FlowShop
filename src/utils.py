@@ -1,9 +1,7 @@
 
-import random 
-import numpy as np
+import random
 import csv
 
-# ---------------------------------------------------------------------------------------------------------------
 
 def read_file(file = "Data\\ejem_clase1.txt"):
     """
@@ -38,7 +36,6 @@ def read_file(file = "Data\\ejem_clase1.txt"):
             retorno[tarea].append(datos[tarea+1][maquina*2+1])
 
     return retorno
-# ---------------------------------------------------------------------------------------------------------------
 
 def generar_permutador(matriz_datos = read_file()):
     
@@ -52,7 +49,6 @@ def generar_permutador(matriz_datos = read_file()):
 
     return retorno
 
-# ---------------------------------------------------------------------------------------------------------------
 
 def funcion_f(vector = generar_permutador(), datos = read_file()):
     ntar = len(datos)
@@ -83,74 +79,6 @@ def tiempo_final_f(f):
             mx = aux
 
     return mx
-   
-# ---------------------------------------------------------------------------------------------------------------
-def rand_search(d, iter):
-    actual_sol = generar_permutador(d)
-    actual_time = tiempo_final_f(funcion_f(actual_sol, d))
-
-    for i in range(iter):
-        new_sol = generar_permutador(d)
-        actual_time = tiempo_final_f(funcion_f(new_sol, d))
-
-        if new_sol > actual_sol:
-            actual_sol = new_sol
-            
-    return actual_sol
-
-def get_vecino(v):
-    for i in range(len(v)):
-        for j in range(i):
-            aux = list(v)
-            aux[i], aux[j] = aux[j], aux[i]
-            yield aux
-
-def local_search(d, primero = bool, actual_sol = None):
-    if actual_sol == None:
-        actual_sol = generar_permutador(d)
-    actual_time = tiempo_final_f(funcion_f(actual_sol, d))
-
-    while True:
-        aux = actual_sol
-        for i in get_vecino(actual_sol):
-            new_sol = i
-            actual_time = tiempo_final_f(funcion_f(new_sol, d))
-
-            if new_sol > actual_sol:
-                actual_sol = new_sol
-            if primero: # local primero
-                break
-
-        if aux == actual_sol: break
-
-    return actual_sol
-
-
-
-# ---------------------------------------------------------------------------------------------------------------
-
-def recocido_simulado(sec_enfriamiento, d, temp_final, iteraciones = 50):
-    
-    sol_actual = generar_permutador(d)
-    temp_inicial = 0.35 * funcion_f(sol_actual, d)
-    temp = temp_inicial
-
-    while temp >= temp_final:
-        for i in range(iteraciones):
-            sol_candidata = random.choice(get_vecino(sol_actual))
-            coste = funcion_f(sol_candidata, d) - funcion_f(sol_actual, d)
-            
-            if coste < 0:
-                sol_actual = sol_candidata
-            else:
-                rand = random.random()
-                if rand <= np.index_exp(-coste / temp):
-                    sol_actual = sol_candidata
-    temp = sec_enfriamiento * temp
-
-    return sol_actual
-
-# ---------------------------------------------------------------------------------------------------------------
 
 def get_fichero(n = None):
     documentos = ["ejem_clase1.txt","ejem_clase2.txt"]
