@@ -8,7 +8,7 @@ def genetic(d, NIND: int=20, NGEN: int=100, MUPB: float=0.2, CXPB: float=0.7, OX
     bestfit = -1
     dmin, davg, dmax = [], [], []
     
-    
+    # Creamos la población
     for i in range(NIND):
         individuos.append(generar_permutador(d))
     
@@ -25,11 +25,16 @@ def genetic(d, NIND: int=20, NGEN: int=100, MUPB: float=0.2, CXPB: float=0.7, OX
         davg.append(sum(fitness)/len(fitness))
         dmax.append(max(fitness))
 
+        # Seleccionamos
         #individuos = seleccion.ruleta(individuos=individuos, fitness=fitness, seleccionados=NIND)
         #individuos = seleccion.estocastico(individuos=individuos, fitness=fitness, seleccionados=NIND)
         individuos = seleccion.torneo(individuos=individuos, fitness=fitness, seleccionados=NIND, participantes=3)
         #individuos = seleccion.ranking(individuos=individuos, fitness=fitness, seleccionados=NIND)
+        
+        # Cruzamos
         individuos = cruces.cruce(individuos = individuos, OX=OX, CXPB=CXPB)
+        
+        # Mutamos
         cruces.mutacion(individuos=individuos, MUPB=MUPB, times = 1)
     
     if plot:
