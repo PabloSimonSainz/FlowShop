@@ -23,6 +23,29 @@ def ruleta(individuos, fitness, seleccionados: int):
     
     return retorno
 
+def estocastico(individuos, fitness, seleccionados: int):
+    retorno = []
+    a = random.random()
+    k = seleccionados
+    totalf = sum(fitness)
+    q = []
+    
+    aux = 0
+    for i in fitness:
+        aux += (totalf-i)/totalf
+        q.append(aux)
+    
+    for j in range(k):
+        r = (a + j)/k
+        
+        aux = 0
+        for j in q:
+            if r < j:
+                retorno.append(individuos[aux])
+                break
+            aux += 1
+    return retorno
+
 def torneo(individuos, fitness, seleccionados: int, participantes:int=3):
     retorno = []
     for i in range(seleccionados):
