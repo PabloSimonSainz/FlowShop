@@ -43,11 +43,12 @@ def ox(pareja):
         aux = 0
         for i in range(len(pareja[0])):
             if pareja[k][i] not in bloque:
-                for i in range(aux, len(pareja[0])):
-                    if pareja[not k][i] not in bloque:
-                        retorno[k][i] = pareja[not k][i]
-                        aux = i + 1
+                for j in range(aux, len(pareja[0])):
+                    aux += 1
+                    if pareja[not k][j] not in bloque:
+                        retorno[k][i] = pareja[not k][j]
                         break
+                    
     return retorno
 
 def cx(pareja):
